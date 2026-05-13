@@ -5,7 +5,7 @@
 
     <select id="selectByUserId" resultType="com.campus.textbook.entity.Favorite">
         SELECT * FROM t_favorite WHERE user_id = #{userId}
-        ORDER BY fav_time DESC
+        ORDER BY create_time DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 
@@ -14,7 +14,7 @@
     </select>
 
     <select id="selectByUserAndBook" resultType="com.campus.textbook.entity.Favorite">
-        SELECT * FROM t_favorite WHERE user_id = #{userId} AND book_id = #{bookId} LIMIT 1
+        SELECT * FROM t_favorite WHERE user_id = #{userId} AND textbook_id = #{bookId} LIMIT 1
     </select>
 
 </mapper>

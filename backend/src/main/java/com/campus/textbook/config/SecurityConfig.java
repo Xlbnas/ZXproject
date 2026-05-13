@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Map;
 
 /**
  * Spring Security配置
@@ -57,21 +56,25 @@ public class SecurityConfig {
                 // 其余接口需要登录
                 .anyRequest().authenticated()
             )
-            // 未认证时的处理
+            // 未认证时的处理（注意：Map.of 不允许 null 值，用 HashMap 替代）
             .exceptionHandling(e -> e
                 .authenticationEntryPoint((req, res, ex) -> {
                     res.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
                     res.setStatus(401);
-                    String json = new ObjectMapper().writeValueAsString(
-                        Map.of("code", 401, "msg", "请先登录", "data", null));
-                    res.getWriter().write(json);
+                    java.util.Map<String, Object> body = new java.util.HashMap<>();
+                    body.put("code", 401);
+                    body.put("msg", "请先登录");
+                    body.put("data", null);
+                    res.getWriter().write(new ObjectMapper().writeValueAsString(body));
                 })
                 .accessDeniedHandler((req, res, ex) -> {
                     res.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
                     res.setStatus(403);
-                    String json = new ObjectMapper().writeValueAsString(
-                        Map.of("code", 403, "msg", "无权限访问", "data", null));
-                    res.getWriter().write(json);
+                    java.util.Map<String, Object> body = new java.util.HashMap<>();
+                    body.put("code", 403);
+                    body.put("msg", "无权限访问");
+                    body.put("data", null);
+                    res.getWriter().write(new ObjectMapper().writeValueAsString(body));
                 })
             )
             // 加入JWT过滤器

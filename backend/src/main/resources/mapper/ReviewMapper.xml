@@ -5,7 +5,7 @@
 
     <select id="selectByReviewerId" resultType="com.campus.textbook.entity.Review">
         SELECT * FROM t_review WHERE reviewer_id = #{reviewerId}
-        ORDER BY review_time DESC
+        ORDER BY create_time DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 
@@ -14,13 +14,13 @@
     </select>
 
     <select id="selectByRevieweeId" resultType="com.campus.textbook.entity.Review">
-        SELECT * FROM t_review WHERE reviewee_id = #{revieweeId}
-        ORDER BY review_time DESC
+        SELECT * FROM t_review WHERE reviewed_id = #{revieweeId}
+        ORDER BY create_time DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 
     <select id="countByRevieweeId" resultType="int">
-        SELECT COUNT(*) FROM t_review WHERE reviewee_id = #{revieweeId}
+        SELECT COUNT(*) FROM t_review WHERE reviewed_id = #{revieweeId}
     </select>
 
 </mapper>

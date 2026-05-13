@@ -43,10 +43,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token) && jwtUtils.isValid(token)) {
             Claims claims = jwtUtils.parseToken(token);
             Integer userId = Integer.valueOf(claims.getSubject());
-            Integer userType = (Integer) claims.get("userType");
 
-            // 根据用户类型设置权限
-            String role = (userType != null && userType == 2) ? "ROLE_ADMIN" : "ROLE_USER";
+            // 根据用户类型设置权限（注意：JJWT 反序列化数字可能是 Integer/Long，统一用 Number 处理）
+            Object userTypeObj = claims.get("userType");
+            int userType = 1;
+            if (userTypeObj instanceof Number) {
+                userType = ((Number) userTypeObj).intValue();
+            }
+            String role = (userType == 2) ? "ROLE_ADMIN" : "ROLE_USER";
+
             var auth = new UsernamePasswordAuthenticationToken(
                     userId, null, List.of(new SimpleGrantedAuthority(role)));
             SecurityContextHolder.getContext().setAuthentication(auth);

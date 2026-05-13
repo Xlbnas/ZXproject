@@ -154,19 +154,18 @@ public class TransactionServiceImpl implements TransactionService {
         // 更新全局统计（id=1的那行）
         EcoStats stats = ecoStatsMapper.selectById(1);
         if (stats != null) {
-            stats.setTotalTransactions(stats.getTotalTransactions() + 1);
-            stats.setTotalSavedAmount(stats.getTotalSavedAmount().add(saved));
-            stats.setTotalCo2Reduction(stats.getTotalCo2Reduction().add(co2));
-            stats.setLastUpdateTime(new Date());
+            stats.setTotalBooks(stats.getTotalBooks() + 1);
+            stats.setTotalSaved(stats.getTotalSaved().add(saved));
+            stats.setTotalCo2(stats.getTotalCo2().add(co2));
             ecoStatsMapper.updateById(stats);
         }
 
         // 更新卖家（持有者）的个人贡献
         UserEco userEco = userEcoMapper.selectByUserId(trans.getOwnerId());
         if (userEco != null) {
-            userEco.setSellCount(userEco.getSellCount() + 1);
-            userEco.setSavedAmount(userEco.getSavedAmount().add(saved));
-            userEco.setCo2Reduction(userEco.getCo2Reduction().add(co2));
+            userEco.setTotalBooks(userEco.getTotalBooks() + 1);
+            userEco.setTotalSaved(userEco.getTotalSaved().add(saved));
+            userEco.setTotalCo2(userEco.getTotalCo2().add(co2));
             userEcoMapper.updateById(userEco);
         }
     }

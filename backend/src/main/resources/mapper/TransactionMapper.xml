@@ -10,7 +10,7 @@
         <if test="status != null">
             AND trans_status = #{status}
         </if>
-        ORDER BY trans_time DESC
+        ORDER BY create_time DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 
@@ -25,7 +25,7 @@
     <!-- 管理员查询所有交易 -->
     <select id="selectByCondition" resultType="com.campus.textbook.entity.Transaction">
         SELECT t.* FROM t_transaction t
-        LEFT JOIN t_textbook b ON t.book_id = b.id
+        LEFT JOIN t_textbook b ON t.textbook_id = b.id
         <where>
             <if test="status != null">
                 AND t.trans_status = #{status}
@@ -35,13 +35,13 @@
                 OR b.isbn LIKE CONCAT('%',#{keyword},'%'))
             </if>
         </where>
-        ORDER BY t.trans_time DESC
+        ORDER BY t.create_time DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 
     <select id="countByCondition" resultType="int">
         SELECT COUNT(*) FROM t_transaction t
-        LEFT JOIN t_textbook b ON t.book_id = b.id
+        LEFT JOIN t_textbook b ON t.textbook_id = b.id
         <where>
             <if test="status != null">
                 AND t.trans_status = #{status}
@@ -56,7 +56,7 @@
     <!-- 检查同一用户是否已对同一本书发起过未完成交易（防重复购买） -->
     <select id="countActiveByBookAndRequester" resultType="int">
         SELECT COUNT(*) FROM t_transaction
-        WHERE book_id = #{bookId}
+        WHERE textbook_id = #{bookId}
           AND requester_id = #{requesterId}
           AND trans_status IN (1, 2)
     </select>

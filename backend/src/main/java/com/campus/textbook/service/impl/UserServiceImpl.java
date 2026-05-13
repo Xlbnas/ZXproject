@@ -66,9 +66,9 @@ public class UserServiceImpl implements UserService {
         // 初始化用户环保贡献记录
         UserEco eco = new UserEco();
         eco.setUserId(user.getId());
-        eco.setSellCount(0);
-        eco.setSavedAmount(new java.math.BigDecimal("0.00"));
-        eco.setCo2Reduction(new java.math.BigDecimal("0.00"));
+        eco.setTotalBooks(0);
+        eco.setTotalSaved(new java.math.BigDecimal("0.00"));
+        eco.setTotalCo2(new java.math.BigDecimal("0.00"));
         userEcoMapper.insert(eco);
 
         return Result.success("注册成功");

@@ -24,7 +24,6 @@ public class ReviewServiceImpl implements ReviewService {
         review.setTransId(transId);
         review.setReviewerId(reviewerId);
         review.setRevieweeId(revieweeId);
-        review.setReviewType(reviewType);
         review.setContent(content);
         review.setRating(rating != null ? rating : 5);
         review.setReviewTime(new Date());

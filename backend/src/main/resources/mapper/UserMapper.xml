@@ -17,7 +17,7 @@
                 OR email LIKE CONCAT('%',#{keyword},'%'))
             </if>
         </where>
-        ORDER BY reg_time DESC
+        ORDER BY create_time DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 

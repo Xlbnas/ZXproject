@@ -19,6 +19,7 @@ CREATE TABLE t_user (
     phone       VARCHAR(20)  COMMENT '手机号',
     email       VARCHAR(100) COMMENT '邮箱',
     avatar      VARCHAR(255) COMMENT '头像路径',
+    major       VARCHAR(50)  COMMENT '专业',
     user_type   TINYINT      NOT NULL DEFAULT 1 COMMENT '用户类型 1-普通用户 2-管理员',
     status      TINYINT      NOT NULL DEFAULT 1 COMMENT '账号状态 0-禁用 1-正常',
     create_time DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间'
@@ -138,13 +139,13 @@ INSERT INTO t_admin (username, password, real_name) VALUES
 ('admin', '$2b$10$abcdefghijklmnopqrstuOV/NYJoU.sdfr6C8Dly7wPd/UOSbcsvO', '系统管理员');
 
 -- 普通用户（密码均为 test123）
-INSERT INTO t_user (username, password, real_name, student_id, phone, email, user_type, status) VALUES
-('zhangsan', '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '张三', '2022001001', '13800001111', 'zhangsan@example.com', 1, 1),
-('lisi',     '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '李四', '2022001002', '13800002222', 'lisi@example.com',     1, 1),
-('wangwu',   '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '王五', '2022001003', '13800003333', 'wangwu@example.com',   1, 1),
-('zhaoliu',  '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '赵六', '2021003012', '13800004444', 'zhaoliu@example.com',  1, 1),
-('sunqi',    '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '孙七', '2021003013', '13800005555', 'sunqi@example.com',    1, 1),
-('admin',    '$2b$10$abcdefghijklmnopqrstuOV/NYJoU.sdfr6C8Dly7wPd/UOSbcsvO', '管理员', '0000000000', '13900000000', 'admin@campus.edu',    2, 1);
+INSERT INTO t_user (username, password, real_name, student_id, phone, email, major, user_type, status) VALUES
+('zhangsan', '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '张三', '2022001001', '13800001111', 'zhangsan@example.com', '计算机科学与技术', 1, 1),
+('lisi',     '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '李四', '2022001002', '13800002222', 'lisi@example.com',     '软件工程',         1, 1),
+('wangwu',   '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '王五', '2022001003', '13800003333', 'wangwu@example.com',   '数据科学与大数据', 1, 1),
+('zhaoliu',  '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '赵六', '2021003012', '13800004444', 'zhaoliu@example.com',  '网络工程',         1, 1),
+('sunqi',    '$2b$10$abcdefghijklmnopqrstuOPBlunhbqcPh2ROxs8a0YT6S5PAELQEK', '孙七', '2021003013', '13800005555', 'sunqi@example.com',    '人工智能',         1, 1),
+('admin',    '$2b$10$abcdefghijklmnopqrstuOV/NYJoU.sdfr6C8Dly7wPd/UOSbcsvO', '管理员','0000000000', '13900000000', 'admin@campus.edu',    NULL,               2, 1);
 
 -- 初始化全局环保统计
 INSERT INTO t_eco_stats (total_books, total_saved, total_co2) VALUES (0, 0.00, 0.00);

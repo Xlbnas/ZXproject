@@ -25,7 +25,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         if (pageSize < 1) pageSize = 10;
         // MyBatis-Plus分页（简单实现，不引入分页插件）
         QueryWrapper<Announcement> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("publish_time");
+        wrapper.orderByDesc("create_time");
         List<Announcement> list = announcementMapper.selectList(wrapper);
         long total = list.size();
         // 手动分页

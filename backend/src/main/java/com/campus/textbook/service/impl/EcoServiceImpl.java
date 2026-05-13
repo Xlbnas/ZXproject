@@ -29,9 +29,9 @@ public class EcoServiceImpl implements EcoService {
         EcoStats stats = ecoStatsMapper.selectById(1);
         Map<String, Object> result = new HashMap<>();
         if (stats != null) {
-            result.put("totalBooks", stats.getTotalTransactions());
-            result.put("totalSaved", stats.getTotalSavedAmount());
-            result.put("totalCO2", stats.getTotalCo2Reduction());
+            result.put("totalBooks", stats.getTotalBooks());
+            result.put("totalSaved", stats.getTotalSaved());
+            result.put("totalCO2", stats.getTotalCo2());
         } else {
             result.put("totalBooks", 0);
             result.put("totalSaved", new BigDecimal("0.00"));
@@ -48,13 +48,13 @@ public class EcoServiceImpl implements EcoService {
         UserEco eco = userEcoMapper.selectByUserId(userId);
         Map<String, Object> result = new HashMap<>();
         if (eco != null) {
-            result.put("sellCount", eco.getSellCount());
-            result.put("savedAmount", eco.getSavedAmount());
-            result.put("co2Reduction", eco.getCo2Reduction());
+            result.put("totalBooks", eco.getTotalBooks());
+            result.put("totalSaved", eco.getTotalSaved());
+            result.put("totalCO2", eco.getTotalCo2());
         } else {
-            result.put("sellCount", 0);
-            result.put("savedAmount", new BigDecimal("0.00"));
-            result.put("co2Reduction", new BigDecimal("0.00"));
+            result.put("totalBooks", 0);
+            result.put("totalSaved", new BigDecimal("0.00"));
+            result.put("totalCO2", new BigDecimal("0.00"));
         }
         return Result.success(result);
     }
