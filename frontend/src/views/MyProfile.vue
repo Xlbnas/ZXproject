@@ -145,10 +145,8 @@ const pwdForm = reactive({
 })
 
 onMounted(async () => {
-  // 加载用户信息
-  const res = await userApi.getInfo()
-  if (res.code === 200) {
-    const u = res.data
+  const u = await userStore.refreshFromServer()
+  if (u) {
     profileForm.realName = u.realName || ''
     profileForm.major = u.major || ''
     profileForm.phone = u.phone || ''
@@ -159,13 +157,14 @@ onMounted(async () => {
   const bookRes = await textbookApi.myPublished()
   if (bookRes.code === 200) myBooks.value = bookRes.data || []
 
-  // 加载环保贡献
+  // 加载环保贡献（字段名与后端 EcoService 一致）
   const ecoRes = await ecoApi.personalStats()
   if (ecoRes.code === 200) {
+    const d = ecoRes.data || {}
     eco.value = {
-      sellCount: ecoRes.data.sellCount || 0,
-      savedAmount: (ecoRes.data.savedAmount || 0).toFixed(2),
-      co2Reduction: (ecoRes.data.co2Reduction || 0).toFixed(2)
+      sellCount: d.totalBooks ?? d.sellCount ?? 0,
+      savedAmount: (d.totalSaved ?? d.savedAmount ?? 0).toFixed(2),
+      co2Reduction: (d.totalCO2 ?? d.co2Reduction ?? 0).toFixed(2)
     }
   }
 })

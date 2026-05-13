@@ -70,6 +70,8 @@ async function handleLogin() {
         realName: data.realName,
         userType: data.userType
       })
+      // 再拉一次完整用户信息，保证姓名等与数据库一致（避免只信登录接口里缓存字段）
+      await userStore.refreshFromServer()
       ElMessage.success('登录成功')
       // 管理员跳管理后台，普通用户跳首页
       if (data.userType === 2) {
