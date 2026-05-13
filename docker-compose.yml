@@ -1,0 +1,67 @@
+services:
+
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0
+    container_name: campus-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: campus_textbook
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    ports:
+      - "33306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --default-authentication-plugin=mysql_native_password
+             --character-set-server=utf8mb4
+             --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - campus-net
+
+  # Spring Boot后端
+  backend:
+    build: ./backend
+    container_name: campus-backend
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root123
+      upload.path: /app/uploads/
+    ports:
+      - "38081:8080"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - campus-net
+    restart: unless-stopped
+
+  # Vue前端（Nginx）
+  frontend:
+    build: ./frontend
+    container_name: campus-frontend
+    ports:
+      - "38080:80"
+    depends_on:
+      - backend
+    networks:
+      - campus-net
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  uploads_data:
+
+networks:
+  campus-net:
+    driver: bridge

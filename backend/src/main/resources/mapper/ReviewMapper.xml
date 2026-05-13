@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.textbook.mapper.ReviewMapper">
+
+    <select id="selectByReviewerId" resultType="com.campus.textbook.entity.Review">
+        SELECT * FROM t_review WHERE reviewer_id = #{reviewerId}
+        ORDER BY review_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countByReviewerId" resultType="int">
+        SELECT COUNT(*) FROM t_review WHERE reviewer_id = #{reviewerId}
+    </select>
+
+    <select id="selectByRevieweeId" resultType="com.campus.textbook.entity.Review">
+        SELECT * FROM t_review WHERE reviewee_id = #{revieweeId}
+        ORDER BY review_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countByRevieweeId" resultType="int">
+        SELECT COUNT(*) FROM t_review WHERE reviewee_id = #{revieweeId}
+    </select>
+
+</mapper>

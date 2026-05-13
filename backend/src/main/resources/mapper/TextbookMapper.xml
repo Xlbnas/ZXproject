@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.textbook.mapper.TextbookMapper">
+
+    <!-- 多条件教材检索（只查已上架的教材） -->
+    <select id="searchTextbooks" resultType="com.campus.textbook.entity.Textbook">
+        SELECT * FROM t_textbook
+        WHERE status = 1 AND audit_status = 1
+        <if test="keyword != null and keyword != ''">
+            AND (book_name LIKE CONCAT('%',#{keyword},'%')
+            OR description LIKE CONCAT('%',#{keyword},'%'))
+        </if>
+        <if test="isbn != null and isbn != ''">
+            AND isbn = #{isbn}
+        </if>
+        <if test="minPrice != null">
+            AND expected_price >= #{minPrice}
+        </if>
+        <if test="maxPrice != null">
+            AND expected_price &lt;= #{maxPrice}
+        </if>
+        ORDER BY publish_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countSearchTextbooks" resultType="int">
+        SELECT COUNT(*) FROM t_textbook
+        WHERE status = 1 AND audit_status = 1
+        <if test="keyword != null and keyword != ''">
+            AND (book_name LIKE CONCAT('%',#{keyword},'%')
+            OR description LIKE CONCAT('%',#{keyword},'%'))
+        </if>
+        <if test="isbn != null and isbn != ''">
+            AND isbn = #{isbn}
+        </if>
+        <if test="minPrice != null">
+            AND expected_price >= #{minPrice}
+        </if>
+        <if test="maxPrice != null">
+            AND expected_price &lt;= #{maxPrice}
+        </if>
+    </select>
+
+    <select id="selectByPublisherId" resultType="com.campus.textbook.entity.Textbook">
+        SELECT * FROM t_textbook WHERE publisher_id = #{publisherId}
+        ORDER BY publish_time DESC
+    </select>
+
+    <!-- 管理员查看教材，可按审核状态筛选 -->
+    <select id="selectForAdmin" resultType="com.campus.textbook.entity.Textbook">
+        SELECT * FROM t_textbook
+        <where>
+            <if test="auditStatus != null">
+                AND audit_status = #{auditStatus}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (book_name LIKE CONCAT('%',#{keyword},'%')
+                OR isbn LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+        </where>
+        ORDER BY publish_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countForAdmin" resultType="int">
+        SELECT COUNT(*) FROM t_textbook
+        <where>
+            <if test="auditStatus != null">
+                AND audit_status = #{auditStatus}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (book_name LIKE CONCAT('%',#{keyword},'%')
+                OR isbn LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+        </where>
+    </select>
+
+</mapper>

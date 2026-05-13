@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.textbook.mapper.AdminMapper">
+
+    <select id="selectByUsername" resultType="com.campus.textbook.entity.Admin">
+        SELECT * FROM t_admin WHERE username = #{username} LIMIT 1
+    </select>
+
+</mapper>
